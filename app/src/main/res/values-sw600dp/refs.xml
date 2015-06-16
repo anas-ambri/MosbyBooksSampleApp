@@ -1,0 +1,7 @@
+<resources>
+    <!--
+    Layout alias to replace the single-pane version of the layout with a
+    two-pane version on Large screens.
+    -->
+    <item type="layout" name="activity_eateries_list">@layout/books_list_activity_large</item>
+</resources>

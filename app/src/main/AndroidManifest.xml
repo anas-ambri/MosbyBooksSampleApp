@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.verybadalloc.books">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-sdk tools:overrideLibrary="com.hannesdorfmann.mosby, com.hannesdorfmann.mosby.mvp, com.hannesdorfmann.mosby.dagger1, com.hannesdorfmann.mosby.dagger1.mvp, com.hannesdorfmann.mosby.mvp.viewstate"/>
+
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.verybadalloc.books.views.BooksListActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.verybadalloc.books.views.BookDetailsActivity"
+            android:parentActivityName="com.verybadalloc.books.views.BooksListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.verybadalloc.books.views.BooksListActivity" />
+        </activity>
+
+    </application>
+
+</manifest>
