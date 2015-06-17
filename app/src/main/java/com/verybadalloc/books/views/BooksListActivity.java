@@ -48,7 +48,7 @@ public class BooksListActivity extends FragmentActivity {
     }
 
     @Subscribe
-    public void onEaterySelected(BookSelected event) {
+    public void onBookSelected(BookSelected event) {
         if(isTwoPane()) {
             Fragment fragment = new BookDetailsFragmentBuilder(event.selectedBook).build();
             getSupportFragmentManager().beginTransaction()
