@@ -18,6 +18,7 @@
 
 #This project
 -keep class com.verybadalloc.books.** { *; }
+-keepnames class com.verybadalloc.books.** { *; }
 
 #Butterknife
 -keep class butterknife.** { *; }
