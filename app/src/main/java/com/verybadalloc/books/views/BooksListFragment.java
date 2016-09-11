@@ -60,7 +60,7 @@ public class BooksListFragment extends MvpLceFragment<SwipeRefreshLayout, Book[]
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        presenter.loadEateries(pullToRefresh);
+        presenter.loadBooks(pullToRefresh);
     }
 
     @Override
