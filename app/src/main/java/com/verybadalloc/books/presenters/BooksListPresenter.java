@@ -15,7 +15,7 @@ public class BooksListPresenter extends MvpBasePresenter<BooksListView> {
 
     private static final String TAG = "BooksListPresenter";
 
-    public void loadEateries(final boolean pullToRefresh) {
+    public void loadBooks(final boolean pullToRefresh) {
 
         if(isViewAttached()) {
             getView().showLoading(pullToRefresh);
