@@ -15,7 +15,7 @@ public class BooksListPresenter extends MvpBasePresenter<BooksListView> {
 
 
     private static final String TAG = "BooksListPresenter";
-    private DataFetcher dataFetcher;
+    protected DataFetcher dataFetcher;
 
     public BooksListPresenter(DataFetcher dataFetcher) {
         this.dataFetcher = dataFetcher;
@@ -39,10 +39,8 @@ public class BooksListPresenter extends MvpBasePresenter<BooksListView> {
 
             @Override
             public void onFailure(String reason) {
-                String message = "Failed to load books because " + reason;
-                Log.e(TAG, message);
                 if (isViewAttached()) {
-                    getView().showError(new Throwable(message), pullToRefresh);
+                    getView().showError(new Throwable(reason), pullToRefresh);
                 }
             }
         });
