@@ -11,6 +11,7 @@ import com.verybadalloc.books.R;
 import com.verybadalloc.books.adapters.BooksAdapter;
 import com.verybadalloc.books.adapters.viewHolders.BookItemViewHolder;
 import com.verybadalloc.books.model.Book;
+import com.verybadalloc.books.network.RealDataFetcher;
 import com.verybadalloc.books.presenters.BooksListPresenter;
 
 import butterknife.InjectView;
@@ -46,7 +47,9 @@ public class BooksListFragment extends MvpLceFragment<SwipeRefreshLayout, Book[]
 
     @Override
     public BooksListPresenter createPresenter() {
-        return new BooksListPresenter();
+        return new BooksListPresenter(
+                new RealDataFetcher()
+        );
     }
 
     @Override

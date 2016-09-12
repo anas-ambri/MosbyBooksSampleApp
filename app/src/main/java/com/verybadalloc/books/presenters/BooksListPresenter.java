@@ -13,7 +13,13 @@ import com.verybadalloc.books.views.BooksListView;
  */
 public class BooksListPresenter extends MvpBasePresenter<BooksListView> {
 
+
     private static final String TAG = "BooksListPresenter";
+    private DataFetcher dataFetcher;
+
+    public BooksListPresenter(DataFetcher dataFetcher) {
+        this.dataFetcher = dataFetcher;
+    }
 
     public void loadBooks(final boolean pullToRefresh) {
 
@@ -21,7 +27,7 @@ public class BooksListPresenter extends MvpBasePresenter<BooksListView> {
             getView().showLoading(pullToRefresh);
         }
 
-        DataFetcher.getBooks(new DataCallback<Book[]>() {
+        dataFetcher.getBooks(new DataCallback<Book[]>() {
 
             @Override
             public void onSuccess(Book[] books) {
