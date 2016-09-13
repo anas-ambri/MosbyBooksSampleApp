@@ -31,6 +31,8 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
 
     signingConfigs {
@@ -79,10 +81,30 @@ dependencies {
 
     testCompile 'com.hannesdorfmann.mosby:testing:1.1.0'
 
+    //Instrumentation tests
+    androidTestCompile ('com.android.support.test:runner:0.5') {
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile ('com.android.support.test:rules:0.5') {
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile ('com.android.support.test.espresso:espresso-core:2.2.2') {
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile ('com.android.support.test.espresso:espresso-contrib:2.2.2') {
+        exclude module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude module: 'recyclerview-v7'
+        exclude module: 'design'
+    }
+
     apt 'com.hannesdorfmann.parcelableplease:processor:1.0.1'
     apt 'com.android.databinding:compiler:1.0-rc0'
     apt 'frankiesardo:icepick-processor:3.0.2'
     apt 'com.hannesdorfmann.fragmentargs:processor:2.1.0'
 
+    androidTestCompile 'junit:junit:4.12'
+    compile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
 }
 
