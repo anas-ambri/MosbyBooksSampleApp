@@ -13,12 +13,12 @@ public class RealDataFetcher implements DataFetcher {
 
     @Override
     public void getBooks(final DataCallback<Book[]> callback) {
-        HttpRestClient.get(BOOKS_API, null, new NetworkCallback() {
+        HttpRestClient.get(BOOKS_API, new NetworkCallback() {
 
             @Override
             public void onSuccess(String response) {
-                Book[] eateries = new Gson().fromJson(response, Book[].class);
-                callback.onSuccess(eateries);
+                Book[] books = new Gson().fromJson(response, Book[].class);
+                callback.onSuccess(books);
             }
 
             @Override
