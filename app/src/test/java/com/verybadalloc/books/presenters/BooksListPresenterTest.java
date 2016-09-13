@@ -3,8 +3,8 @@ package com.verybadalloc.books.presenters;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.verybadalloc.books.model.Book;
+import com.verybadalloc.books.network.DataCallback;
 import com.verybadalloc.books.network.DataFetcher;
-import com.verybadalloc.books.network.FakeDataFetcher;
 import com.verybadalloc.books.views.BooksListView;
 
 import org.junit.Test;
@@ -13,7 +13,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -33,48 +35,62 @@ public class BooksListPresenterTest {
         b1.name = "The Girl on the Train";
         data = new Book[] {b1};
     }
-    private DataFetcher dataFetcher;
     private BooksListPresenter presenter;
 
     @Mock
     BooksListView view;
+    @Mock
+    DataFetcher dataFetcher;
 
     @Test
     public void failureDataFetcher_showError() {
         //Given
-        dataFetcher = new FakeDataFetcher(ERROR_DATA_FETCH);
         presenter = new BooksListPresenter(dataFetcher);
         presenter.attachView(view);
+        boolean pullToRefresh = true;
 
         //When
-        boolean pullToRefresh = true;
         presenter.loadBooks(pullToRefresh);
 
         //Then
+        ArgumentCaptor<DataCallback> dataCallbackArg = ArgumentCaptor.forClass(DataCallback.class);
         verify(view).showLoading(pullToRefresh);
-        ArgumentCaptor<Throwable> throwableArgument = ArgumentCaptor.forClass(Throwable.class);
-        ArgumentCaptor<Boolean> booleanArgument = ArgumentCaptor.forClass(Boolean.class);
-        verify(view).showError(throwableArgument.capture(), booleanArgument.capture());
-        assertEquals(ERROR_DATA_FETCH, throwableArgument.getValue().getMessage());
-        assertEquals(pullToRefresh, booleanArgument.getValue());
+        verify(dataFetcher, times(1)).getBooks(dataCallbackArg.capture());
+
+        //When
+        dataCallbackArg.getValue().onFailure(ERROR_DATA_FETCH);
+
+        //Then
+        ArgumentCaptor<Throwable> throwableArg = ArgumentCaptor.forClass(Throwable.class);
+        ArgumentCaptor<Boolean> booleanArg = ArgumentCaptor.forClass(Boolean.class);
+        verify(view).showError(throwableArg.capture(), booleanArg.capture());
+        assertEquals(ERROR_DATA_FETCH, throwableArg.getValue().getMessage());
+        assertEquals(pullToRefresh, booleanArg.getValue());
     }
 
     @Test
     public void successDataFetcher_showContent() {
         //Given
-        dataFetcher = new FakeDataFetcher(data);
         presenter = new BooksListPresenter(dataFetcher);
         presenter.attachView(view);
+        boolean pullToRefresh = true;
 
         //When
-        boolean pullToRefresh = true;
         presenter.loadBooks(pullToRefresh);
+
+        //Then
+        ArgumentCaptor<DataCallback> dataCallbackArg = ArgumentCaptor.forClass(DataCallback.class);
+        verify(view).showLoading(pullToRefresh);
+        verify(dataFetcher, times(1)).getBooks(dataCallbackArg.capture());
+
+        //When
+        dataCallbackArg.getValue().onSuccess(data);
 
         //Then
         verify(view).showLoading(pullToRefresh);
         ArgumentCaptor<Book[]> booksArgument = ArgumentCaptor.forClass(Book[].class);
         verify(view).setData(booksArgument.capture());
         verify(view).showContent();
-        assertEquals(data, booksArgument.getValue());
+        assertArrayEquals(data, booksArgument.getValue());
     }
 }
