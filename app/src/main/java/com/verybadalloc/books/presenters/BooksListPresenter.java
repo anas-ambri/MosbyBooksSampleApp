@@ -1,7 +1,5 @@
 package com.verybadalloc.books.presenters;
 
-import android.util.Log;
-
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import com.verybadalloc.books.model.Book;
 import com.verybadalloc.books.network.DataCallback;

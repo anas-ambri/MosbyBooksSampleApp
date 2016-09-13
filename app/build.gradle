@@ -11,8 +11,12 @@ allprojects {
     repositories {
         jcenter()
         maven {
-            // For icepick
-            url 'https://clojars.org/repo/'
+            repositories {
+                //For weak handler
+                url 'https://oss.sonatype.org/content/repositories/releases/'
+                // For icepick
+                url 'https://clojars.org/repo/'
+            }
         }
     }
 }
@@ -66,6 +70,7 @@ dependencies {
 
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.badoo.mobile:android-weak-handler:1.1'
     compile 'com.google.code.gson:gson:2.3'
 
     //Butterknife, FragmentArgs & Icepick injected through mosby

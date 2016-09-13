@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.badoo.mobile.util.WeakHandler;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceFragment;
 import com.verybadalloc.books.R;
 import com.verybadalloc.books.adapters.BooksAdapter;
@@ -28,6 +29,7 @@ public class BooksListFragment extends MvpLceFragment<SwipeRefreshLayout, Book[]
     @InjectView(R.id.contentView)
     SwipeRefreshLayout refreshLayout;
     BooksAdapter adapter;
+    private WeakHandler handler;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -38,6 +40,8 @@ public class BooksListFragment extends MvpLceFragment<SwipeRefreshLayout, Book[]
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         loadData(false);
+
+        handler = new WeakHandler();
     }
 
     @Override
@@ -53,8 +57,13 @@ public class BooksListFragment extends MvpLceFragment<SwipeRefreshLayout, Book[]
     }
 
     @Override
-    public void setData(Book[] data) {
-        adapter.setBooks(data); //notifyDatasetChanged called implicitly
+    public void setData(final Book[] data) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                adapter.setBooks(data); //notifyDatasetChanged called implicitly
+            }
+        });
     }
 
     @Override protected int getLayoutRes() {
@@ -73,7 +82,22 @@ public class BooksListFragment extends MvpLceFragment<SwipeRefreshLayout, Book[]
 
     @Override
     public void showContent() {
-        super.showContent();
-        refreshLayout.setRefreshing(false);
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                BooksListFragment.super.showContent();
+                refreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
+    @Override
+    public void showError(final Throwable e, final boolean pullToRefresh) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                BooksListFragment.super.showError(e, pullToRefresh);
+            }
+        });
     }
 }
