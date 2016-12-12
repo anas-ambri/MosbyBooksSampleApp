@@ -9,7 +9,7 @@ import com.verybadalloc.books.model.Book;
 
 public class RealDataFetcher implements DataFetcher {
 
-    private static final String BOOKS_API = "http://verybadalloc.com/downloads/data/apps/com_verybadalloc_books.json";
+    private static final String BOOKS_API = "http://anasambri.com/downloads/data/apps/com_verybadalloc_books.json";
 
     @Override
     public void getBooks(final DataCallback<Book[]> callback) {
